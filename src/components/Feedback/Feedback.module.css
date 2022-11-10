@@ -1,0 +1,27 @@
+
+.feedbackBlock {
+    margin: 14px;
+}
+
+.feedbackBlock > button {
+    margin-left: 8px;
+    font-weight: 500;
+    font-size: 16px;
+    font-family: inherit;
+    text-transform: capitalize;
+    color: #000000;
+    cursor: pointer;
+    outline: none;
+    box-shadow: 1px 1px 1px 0 rgb(0 0 0 / 0.5);
+    transition: box-shadow 250ms linear;
+}
+
+.feedbackBlock > button:hover {
+    box-shadow: 2px 2px 2px 0 rgb(0 0 0 / 0.5);
+}
+
+.feedbackBlock > p {
+    margin-top: 4px;
+    margin-bottom: 4px;
+    font-size: 18px;
+}
