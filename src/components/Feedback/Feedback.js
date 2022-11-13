@@ -1,66 +1,62 @@
-import React from "react";
+import {useState} from "react";
 import css from './Feedback.module.css'
-import { Statistics } from "./Statistics"
-import { FeedbackOptions } from "./FeedbackOptions"
-import { Section } from "./Section"
-import { Notification } from "./Notification"
+import Statistics from "./Statistics"
+import FeedbackOptions from "./FeedbackOptions"
+import Section from "./Section"
+import Notification from "./Notification"
 
 const feedbackOptions = ['good', 'neutral', 'bad'];
 
-class Feedback extends React.Component {
-    state = {
-        good: 0,
-        neutral: 0,
-        bad: 0,
+export default function Feedback() {
+    const [good, setGood] = useState(0);
+    const [neutral, setNeutral] = useState(0);
+    const [bad, setBad] = useState(0);
+
+    const handleIncrementFeedback = option => {
+        switch (option) {
+            case feedbackOptions[0]: setGood(good + 1); break;
+            case feedbackOptions[1]: setNeutral(neutral + 1); break;
+            case feedbackOptions[2]: setBad(bad + 1); break;
+            default: return;
+        }
     }
 
-    handleIncrementFeedback = option => {
-        this.setState(prevState => ({ [option]: prevState[option] + 1 }));
-    }
-    
-    countTotalFeedback() {
-        const { good, neutral, bad } = this.state;
+    const countTotalFeedback = () => {
         return (
             good + neutral + bad
         );
     }
 
-    countPositiveFeedbackPercentage() {
-        const { good } = this.state;
-        const total = this.countTotalFeedback();
+    const countPositiveFeedbackPercentage = () => {
+        const total = countTotalFeedback();
         return (
             total ? Math.round(good / total * 100) : 0
         );
     }
 
-    render() {
-        const { good, neutral, bad } = this.state;
-        return (
-            <div className={css.feedbackBlock}>
-                <Section title="Please leave feedback">
-                    <FeedbackOptions
-                        options={ feedbackOptions }
-                        onLeaveFeedback={ this.handleIncrementFeedback }
+    return (
+        <div className={css.feedbackBlock}>
+            <Section title="Please leave feedback">
+                <FeedbackOptions
+                    options={ feedbackOptions }
+                    onLeaveFeedback={handleIncrementFeedback}
+                />
+            </Section>
+            <Section title="Statistics">
+                {
+                    (countTotalFeedback() > 0)
+                    ?
+                    <Statistics
+                        good={good}
+                        neutral={neutral}
+                        bad={bad}
+                        total={countTotalFeedback()}
+                        positivePercentage={countPositiveFeedbackPercentage()}
                     />
-                </Section>
-                <Section title="Statistics">
-                    {
-                        (this.countTotalFeedback() > 0)
-                        ?
-                        <Statistics
-                            good={good}
-                            neutral={neutral}
-                            bad={bad}
-                            total={this.countTotalFeedback()}
-                            positivePercentage={this.countPositiveFeedbackPercentage()}
-                        />
-                        :
-                        <Notification message="There is no feedback" />
-                    }
-                </Section>
-            </div>
-        );
-    }
+                    :
+                    <Notification message="There is no feedback" />
+                }
+            </Section>
+        </div>
+    );
 }
-
-export default Feedback;
