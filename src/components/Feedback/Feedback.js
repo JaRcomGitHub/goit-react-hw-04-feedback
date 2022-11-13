@@ -14,10 +14,17 @@ export default function Feedback() {
 
     const handleIncrementFeedback = option => {
         switch (option) {
-            case feedbackOptions[0]: setGood(good + 1); break;
-            case feedbackOptions[1]: setNeutral(neutral + 1); break;
-            case feedbackOptions[2]: setBad(bad + 1); break;
-            default: return;
+            case feedbackOptions[0]:
+                setGood(prevGood => prevGood + 1);
+                break;
+            case feedbackOptions[1]:
+                setNeutral(prevNeutral => prevNeutral + 1);
+                break;
+            case feedbackOptions[2]:
+                setBad(prevBad => prevBad + 1);
+                break;
+            default:
+                return;
         }
     }
 
